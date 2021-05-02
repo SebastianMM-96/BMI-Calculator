@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-resultado',
@@ -7,9 +8,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultadoComponent implements OnInit {
 
-  constructor() { }
+  bmi : number;
+  resultado : string;
+  interpretacion : string;
+
+  constructor(private route: ActivatedRoute) {
+    this.resultado = '';
+    this.interpretacion = '';
+    this.bmi = +route.snapshot.paramMap.get('valor')!;
+  }
 
   ngOnInit(): void {
+    this.getResultado();
+  }
+
+  getResultado() {
+    if(this.bmi >= 25){
+      this.resultado = "Exceso de peso";
+      this.interpretacion = "Tienes un peso corporal superior al normal. Prueba con hacer más ejercicio";
+    }else if(this.bmi >= 18.5){
+      this.resultado = "Normal";
+      this.interpretacion = "Tienes un peso corporal normal. ¡Sigue así!";
+    }else{
+      this.resultado = "Bajo de peso";
+      this.interpretacion = "Tienes un peso corporal más bajo de lo normal. Te recomiendo comer un poco más";
+    }
   }
 
 }
